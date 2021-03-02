@@ -10,7 +10,7 @@
 		position: static;
 	}
 </style>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
 <script type="text/javascript">
     window.cookieconsent_options = {"message":"Unsurprisingly, this website uses cookies for ads and traffic analysis.","dismiss":"Got it!","learnMore":"Learn more","link":"//orteil.dashnet.org/cookieconsentpolicy.html","target":"_blank","theme":"//orteil.dashnet.org/cookieconsent.css","domain":"dashnet.org"};
 </script>
@@ -23,13 +23,14 @@ Code and graphics copyright Orteil, 2013-2020
 Feel free to alter this code to your liking, but please do not re-host it, do not profit from it and do not present it as your own.
 -->
 
-<meta name="viewport" content="width=900, initial-scale=1">
+<!--<meta name="viewport" content="width=900, initial-scale=1">-->
 <link rel="shortcut icon" href="img/favicon.ico" />
 <!--<link href="https://fonts.googleapis.com/css?family=Kavoon&subset=latin,latin-ext" rel="stylesheet" type="text/css">-->
 <link href='https://fonts.googleapis.com/css?family=Merriweather:900&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 <!--<script src="showads.js">--></script><!-- this just detects adblockers so we can adjust the layout and play nice -->
 <script src="base64.js"></script>
 <script src="main.js?v=2.089"></script>
+<script src="main-extra.js"></script>
 <!--
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <script>
@@ -40,6 +41,7 @@ Feel free to alter this code to your liking, but please do not re-host it, do no
 </script>
 -->
 <link href="style.css?v=2.053" rel="stylesheet" type="text/css">
+<link href="style-extra.css" rel="stylesheet" type="text/css">
 <!--[if IE]>
 <style type="text/css">
 	#ifIE9{display:block;}
@@ -127,86 +129,101 @@ Feel free to alter this code to your liking, but please do not re-host it, do no
 		
 		<div id="debug"><div id="devConsole" class="framed"></div><div id="debugLog"></div></div>
 		
-		<div id="sectionLeft" class="inset">
-			<canvas id="backgroundLeftCanvas" style="z-index:5;"></canvas>
-			<div class="blackFiller"></div>
-			<div class="blackGradient"></div>
-			<div id="sectionLeftInfo"></div>
-			<div id="cookies" class="title"></div>
-			<div id="bakeryNameAnchor"><div id="bakeryName" class="title"></div></div>
-			<div id="specialPopup" class="framed prompt offScreen"></div>
-			<div id="buffs" class="crateBox"></div>
-			<div id="cookieAnchor">
-				<div id="bigCookie"></div>
-				<div id="cookieNumbers"></div>
-			</div>
-			<div id="sectionLeftExtra"></div>
-		</div>
-
-		<div class="separatorLeft"></div>
-		<div class="separatorRight"></div>
-
-		<div id="sectionMiddle" class="inset">
-			<div id="comments" class="inset title">
-				<div id="prefsButton" class="button">Options</div>
-				<div id="statsButton" class="button">Stats</div>
-				<div id="logButton" class="button"><div id="checkForUpdate">New update!</div>Info</div>
-				<div id="legacyButton" class="button">Legacy<div id="ascendMeterContainer" class="smallFramed meterContainer"><div id="ascendMeter" class="meter filling"></div></div><div class="roundedPanel" id="ascendNumber"></div><div id="ascendTooltip" class="framed"></div></div>
-				<div id="commentsTextBelow" class="commentsText"></div>
-				<div id="commentsText" class="commentsText"></div>
-				<div class="separatorBottom"></div>
-			</div>
-			<div id="centerArea">
-				<div id="buildingsTitle" class="inset title zoneTitle">Buildings</div>
-				<div id="buildingsMaster"></div>
-				<div id="rows"></div>
-				<div id="menu"></div>
-				<!--
-				<div id="donateBox">
-					<form target="_blank" action="https://www.paypal.com/cgi-bin/webscr" method="post" id="donate" style="margin:0px 16px;">
-					<input type="hidden" name="cmd" value="_s-xclick">
-					<input type="hidden" name="hosted_button_id" value="BBN2WL3TC6QH4">
-					<input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal — The safer, easier way to pay online.">
-					<img alt="" border="0" src="https://www.paypalobjects.com/nl_NL/i/scr/pixel.gif" width="1" height="1">
-					</form>
-					<small>Help us keep developing the game!</small>
+		<div id="section-container" class="section-container">
+			<div id="sectionLeft" class="inset">
+				<canvas id="backgroundLeftCanvas" style="z-index:5;"></canvas>
+				<div class="blackFiller"></div>
+				<div class="blackGradient"></div>
+				<div id="sectionLeftInfo"></div>
+				<div id="cookies" class="title"></div>
+				<div id="bakeryNameAnchor">
+					<div id="bakeryName" class="title"></div>
 				</div>
-				-->
+				<div id="specialPopup" class="framed prompt offScreen"></div>
+				<div id="buffs" class="crateBox"></div>
+				<div id="cookieAnchor">
+					<div id="bigCookie"></div>
+					<div id="cookieNumbers"></div>
+				</div>
+				<div id="sectionLeftExtra"></div>
 			</div>
-		</div>
-
-		<div id="sectionRight" class="inset">
-			<div class="ifNoAds" style="width:300px;text-align:center;padding:8px 0px;background:rgba(0,0,0,0.95);font-size:10px;opacity:0.5;text-shadow:0px 0px 2px #000,0px 1px 0px #000;text-align:center;">
-				Cookie Clicker is mainly supported by ads.<br>Consider unblocking our site or checking out our <a href="https://www.patreon.com/dashnet" target="_blank">Patreon</a>!
-			</div>
+			
 			<!--
-			<div id="smallSupport" style="width:300px;text-align:center;padding-bottom:40px;background:rgba(0,0,0,0.5);position:relative;z-index:100;">
-				
-				<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-				Cookie Clicker Header Responsive
-				<ins class="adsbygoogle"
-					 style="display:block;margin:auto;width:300px;max-height:300px;overflow:hidden;"
-					 data-ad-client="ca-pub-8491708950677704"
-					 data-ad-slot="7077525342"
-					 data-ad-format="rectangle"
-					 data-full-width-responsive="true"></ins>
-				<script>
-				(adsbygoogle = window.adsbygoogle || []).push({});
-				</script>
-				
-				<div class="supportComment">^ Sponsored link ^</div>
-			</div>
+			<div class="separatorLeft"></div>
+			<div class="separatorRight"></div>
 			-->
-			<div id="store">
-				<div id="storeTitle" class="inset title zoneTitle">Store</div>
-				<div id="toggleUpgrades" class="storeSection upgradeBox"></div>
-				<div id="techUpgrades" class="storeSection upgradeBox"></div>
-				<div id="vaultUpgrades" class="storeSection upgradeBox"></div>
-				<div id="upgrades" class="storeSection upgradeBox"></div>
-				<div id="products" class="storeSection"></div>
+			
+			<div id="sectionMiddle" class="inset">
+				<div id="comments" class="inset title">
+					<div id="prefsButton" class="button">Options</div>
+					<div id="statsButton" class="button">Stats</div>
+					<div id="logButton" class="button">
+						<div id="checkForUpdate">New update!</div>Info
+					</div>
+					<div id="legacyButton" class="button">Legacy<div id="ascendMeterContainer" class="smallFramed meterContainer">
+							<div id="ascendMeter" class="meter filling"></div>
+						</div>
+						<div class="roundedPanel" id="ascendNumber"></div>
+						<div id="ascendTooltip" class="framed"></div>
+					</div>
+					<div id="commentsTextBelow" class="commentsText"></div>
+					<div id="commentsText" class="commentsText"></div>
+					<div class="separatorBottom"></div>
+				</div>
+				<div id="centerArea">
+					<div id="buildingsTitle" class="inset title zoneTitle">Buildings</div>
+					<div id="buildingsMaster"></div>
+					<div id="rows"></div>
+					<div id="menu"></div>
+					<!--
+							<div id="donateBox">
+								<form target="_blank" action="https://www.paypal.com/cgi-bin/webscr" method="post" id="donate" style="margin:0px 16px;">
+								<input type="hidden" name="cmd" value="_s-xclick">
+								<input type="hidden" name="hosted_button_id" value="BBN2WL3TC6QH4">
+								<input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal — The safer, easier way to pay online.">
+								<img alt="" border="0" src="https://www.paypalobjects.com/nl_NL/i/scr/pixel.gif" width="1" height="1">
+								</form>
+								<small>Help us keep developing the game!</small>
+							</div>
+							-->
+				</div>
 			</div>
 			
+			<div id="sectionRight" class="inset">
+				<div class="ifNoAds"
+					style="width:300px;text-align:center;padding:8px 0px;background:rgba(0,0,0,0.95);font-size:10px;opacity:0.5;text-shadow:0px 0px 2px #000,0px 1px 0px #000;text-align:center;">
+					Cookie Clicker is mainly supported by ads.<br>Consider unblocking our site or checking out our <a
+						href="https://www.patreon.com/dashnet" target="_blank">Patreon</a>!
+				</div>
+				<!--
+						<div id="smallSupport" style="width:300px;text-align:center;padding-bottom:40px;background:rgba(0,0,0,0.5);position:relative;z-index:100;">
+							
+							<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+							Cookie Clicker Header Responsive
+							<ins class="adsbygoogle"
+								 style="display:block;margin:auto;width:300px;max-height:300px;overflow:hidden;"
+								 data-ad-client="ca-pub-8491708950677704"
+								 data-ad-slot="7077525342"
+								 data-ad-format="rectangle"
+								 data-full-width-responsive="true"></ins>
+							<script>
+							(adsbygoogle = window.adsbygoogle || []).push({});
+							</script>
+							
+							<div class="supportComment">^ Sponsored link ^</div>
+						</div>
+						-->
+				<div id="store">
+					<div id="storeTitle" class="inset title zoneTitle">Store</div>
+					<div id="toggleUpgrades" class="storeSection upgradeBox"></div>
+					<div id="techUpgrades" class="storeSection upgradeBox"></div>
+					<div id="vaultUpgrades" class="storeSection upgradeBox"></div>
+					<div id="upgrades" class="storeSection upgradeBox"></div>
+					<div id="products" class="storeSection"></div>
+				</div>
 			
+			
+			</div>
 		</div>
 		
 		<div id="focusButtons">
@@ -224,7 +241,17 @@ Feel free to alter this code to your liking, but please do not re-host it, do no
 		<div id="tooltipAnchor"><div id="tooltip" class="framed" onMouseOut="Game.tooltip.hide();"></div></div>
 
 	</div>
-
+	<div class="page-tabs">
+		<div id="page-tabs__tab_main" class="page-tabs__tab">
+			Main
+		</div>
+		<div id="page-tabs__tab_info" class="page-tabs__tab">
+			Info
+		</div>
+		<div id="page-tabs__tab_store" class="page-tabs__tab">
+			Store
+		</div>
+	</div>
 </div>
 
 </body>

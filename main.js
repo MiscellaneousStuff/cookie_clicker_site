@@ -1957,7 +1957,7 @@ Game.Launch=function()
 		l('heralds').style.display='inline-block';
 		*/
 
-		
+
 		Game.GrabData();
 		
 		
@@ -14491,5 +14491,8 @@ window.onload=function()
 			//try {Game.Load();}
 			//catch(err) {console.log('ERROR : '+err.message);}
 		}
-	}
+	};
+
+	// Our own modifications to this...
+	mainExtraInit();
 };
