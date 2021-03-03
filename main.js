@@ -4218,10 +4218,11 @@ Game.Launch=function()
 		{
 			//touch events
 			AddEvent(bigCookie,'touchend',Game.ClickCookie);
-			AddEvent(bigCookie,'touchstart',function(event){Game.BigCookieState=1;if (event) event.preventDefault();});
+			//AddEvent(bigCookie,'touchstart',function(event){Game.BigCookieState=1;if (event) event.preventDefault();}); // Old (touchstart 1)
+			AddEvent(bigCookie, 'touchstart', function (event) { Game.BigCookieState = 1; if (Game.prefs.cookiesound) { Game.playCookieClickSound(); } if (event) event.preventDefault(); }); // New (touchstart 1)
 			AddEvent(bigCookie,'touchend',function(event){Game.BigCookieState=0;if (event) event.preventDefault();});
-			//AddEvent(document,'touchmove',Game.GetMouseCoords);
-			AddEvent(document,'mousemove',Game.GetMouseCoords);
+
+			AddEvent(document,'touchmove',Game.GetMouseCoords);
 			AddEvent(document,'touchstart',function(event){Game.lastActivity=Game.time;Game.mouseDown=1;});
 			AddEvent(document,'touchend',function(event){Game.lastActivity=Game.time;Game.mouseDown=0;});
 			AddEvent(document,'touchend',function(event){Game.lastActivity=Game.time;Game.Click=1;});
