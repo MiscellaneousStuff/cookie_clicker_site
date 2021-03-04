@@ -65,6 +65,9 @@ const mainExtraInit = () => {
 
     // DEBUG: Test Game.touchEvents
     Game.touchEvents = 1;
+
+    // Prevent context menu showing when user moves a god to a slot in pantheon minigame
+    $("templeContent").addEventListener("contextmenu", e => e.preventDefault());
 }
 
 const handleTabSwitch = tab => {
@@ -81,4 +84,9 @@ const handleTabSwitch = tab => {
         });
         activeTab = tab;
     }
+}
+
+const setTouchToMouse = (e) => {
+    if (Game.touchEvents == 1)
+        Game.mouseX = e.touches[0].clientX, Game.mouseY = e.touches[0].clientY;
 }

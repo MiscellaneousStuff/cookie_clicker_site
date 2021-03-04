@@ -41,6 +41,11 @@
     left: 0 !important;
 }
 
+.pantheonNoScroll {
+    height: 100%;
+    overflow: hidden !important;
+}
+
 /* ADDITIONAL FUNCTIONALITY */
 .page-tabs {
     display: flex;

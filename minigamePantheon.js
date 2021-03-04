@@ -387,21 +387,102 @@ M.launch=function()
 		div.innerHTML=str;
 		M.swapsL=l('templeSwaps');
 		M.lumpRefill=l('templeLumpRefill');
-		
+
 		for (var i in M.gods)
 		{
 			var me=M.gods[i];
-			AddEvent(l('templeGodDrag'+me.id),'mousedown',function(what){return function(e){if (e.button==0){M.dragGod(what);}}}(me));
-			AddEvent(l('templeGodDrag'+me.id),'mouseup',function(what){return function(e){if (e.button==0){M.dropGod(what);}}}(me));
+			
+			if (Game.touchEvents == 0) {
+				// Mouse events
+				AddEvent(l('templeGodDrag' + me.id), 'mousedown', function (what) { return function (e) { if (e.button == 0) { console.log("DRAG START"); M.dragGod(what); } } }(me)); 
+				AddEvent(l('templeGodDrag' + me.id), 'mouseup', function (what) { return function (e) { if (e.button == 0) { console.log("DRAG END"); M.dropGod(what); } } }(me));
+			} else {
+				// Touch events
+				AddEvent(l('templeGodDrag' + me.id), 'touchstart', function (what) { return function (e) { console.log("DRAG START", what); M.dragGod(what); setTouchToMouse(e); } }(me)); // THIS ONE *IS* WORKING, DONT DELETE IT YOU DEVIL
+				
+				AddEvent(l('templeGodDrag' + me.id), 'touchend',
+					function (what) {
+						return function (e) {
+							
+							let x = Game.mouseX;
+							let y = Game.mouseY;
+							let finalTarget = document.elementFromPoint(x, y); //console.log("DRAG END", e, document.elementFromPoint(x, y));
+
+							// Generate all slot names
+							let slotNames = [];
+							for (let i in M.slot) { slotNames.push('templeSlot' + i) };
+
+							// If our final target is one of the slots, drop it on there
+							console.log("SLOT NAMES:", slotNames, what)
+							if (slotNames.includes(finalTarget.id)) {
+								let whatName = slotNames.filter(name => name == finalTarget.id)[0];
+								let what = parseInt(whatName.substr(whatName.length - 1));
+								console.log("SLOTTED!", what);
+								M.hoverSlot(what);
+								M.dropGod(what);
+								M.hoverSlot(-1);
+							}
+
+							// If not make sure this god is not in any slots (either it was never put in a slot, or it was already in one and now it needs to be taken off a slot)
+							else {
+								console.log("UNSLOTTED!"); M.hoverSlot(-1); //M.dropGod(what);
+							}
+							
+						}
+					}
+				(me));
+				
+
+				// Addition required touch events
+				AddEvent(l('templeGodDrag' + me.id), 'touchmove', (e) => { $("centerArea").classList.add("pantheonNoScroll"); })
+			}
 		}
 		for (var i in M.slot)
 		{
 			var me=M.slot[i];
-			AddEvent(l('templeSlot'+i),'mouseover',function(what){return function(){M.hoverSlot(what);}}(i));
-			AddEvent(l('templeSlot'+i),'mouseout',function(what){return function(e){if (e.button==0){M.hoverSlot(-1);}}}(i));
+			
+			if (Game.touchEvents == 0) {
+				// Mouse events
+				AddEvent(l('templeSlot' + i), 'mouseover', function (what) { return function () { console.log("SLOTTED!", what); M.hoverSlot(what); } }(i));
+				AddEvent(l('templeSlot' + i), 'mouseout', function (what) { return function (e) { if (e.button == 0) { console.log("UNSLOTTED!"); M.hoverSlot(-1); } } }(i));
+			} else {
+				// Touch events
+				AddEvent(l('templeSlot' + i), 'pointerdown', function () { return function (e) { l('templeSlot' + i).releasePointerCapture(e.pointerId) ; console.log("e.pointerId:", e.pointerId)} }(i));
+				AddEvent(l('templeSlot' + i), 'pointerover', function (what) { return function () { console.log("SLOTTED!", what); M.hoverSlot(what); } }(i));
+				AddEvent(l('templeSlot' + i), 'pointerout', function (what) { return function (e) { console.log("UNSLOTTED!"); M.hoverSlot(-1); } }(i));
+				
+
+				/*
+				AddEvent(l('templeSlot' + i), 'touchend', function (what) { return function (e) { 
+					let x = Game.mouseX;
+					let y = Game.mouseY;
+					let finalTarget = document.elementFromPoint(x, y); //console.log("DRAG END", e, document.elementFromPoint(x, y));
+
+					// Generate all slot names
+					let slotNames = [];
+					for (let i in M.slot) { slotNames.push('templeSlot' + i) };
+
+					// If our final target is one of the slots, drop it on there
+					console.log("SLOT NAMES:", slotNames, what)
+					if (slotNames.includes(finalTarget.id)) {
+						console.log("SLOTTED!");
+						M.hoverSlot(what);
+					}
+
+					// If not make sure this god is not in any slots (either it was never put in a slot, or it was already in one and now it needs to be taken off a slot)
+					else {
+						console.log("UNSLOTTED!"); M.hoverSlot(-1);
+					}
+				} }(i));
+				*/
+			}
 		}
 		
-		AddEvent(document,'mouseup',M.dropGod);
+		if (Game.touchEvents == 0) {
+			AddEvent(document, 'mouseup', () => {console.log("DROP IT!"); M.dropGod()});
+		} else {
+			AddEvent(document, 'touchend', () => { console.log("DROP IT!"); $("centerArea").classList.remove("pantheonNoScroll"); M.dropGod()});
+		}
 		
 		
 		M.refillTooltip=function(){
@@ -484,6 +565,7 @@ M.launch=function()
 			var box=l('templeDrag').getBoundingClientRect();
 			var x=Game.mouseX-box.left-60/2;
 			var y=Game.mouseY-box.top;
+			console.log("DRAGGING!", x, y);
 			if (M.slotHovered!=-1)//snap to slots
 			{
 				var box2=l('templeSlot'+M.slotHovered).getBoundingClientRect();

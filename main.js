@@ -597,7 +597,10 @@ Game.Launch=function()
 	if (window.location.href.indexOf('/beta')>-1) Game.beta=1;
 	Game.https=(location.protocol!='https:')?false:true;
 	Game.mobile=0;
-	Game.touchEvents=0;
+	
+	// DEBUG: Default := Game.touchEvents=0;
+	Game.touchEvents = 1;
+	
 	//if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) Game.mobile=1;
 	//if (Game.mobile) Game.touchEvents=1;
 	//if ('ontouchstart' in document.documentElement) Game.touchEvents=1;
@@ -4186,6 +4189,11 @@ Game.Launch=function()
 			Game.mouseY=posy-y;
 			Game.mouseMoved=1;
 			Game.lastActivity=Game.time;
+
+			// Update touch coords properly using this when in touch mode
+			if (Game.touchEvents == 1) {
+				setTouchToMouse(e);
+			}
 		}
 		var bigCookie=l('bigCookie');
 		bigCookie.setAttribute('alt','Big clickable cookie');
@@ -4223,7 +4231,7 @@ Game.Launch=function()
 			AddEvent(bigCookie,'touchend',function(event){Game.BigCookieState=0;if (event) event.preventDefault();});
 
 			AddEvent(document,'touchmove',Game.GetMouseCoords);
-			AddEvent(document,'touchstart',function(event){Game.lastActivity=Game.time;Game.mouseDown=1;});
+			AddEvent(document, 'touchstart', function (e) {setTouchToMouse(e) ; Game.lastActivity=Game.time;Game.mouseDown=1;});
 			AddEvent(document,'touchend',function(event){Game.lastActivity=Game.time;Game.mouseDown=0;});
 			AddEvent(document,'touchend',function(event){Game.lastActivity=Game.time;Game.Click=1;});
 		}
